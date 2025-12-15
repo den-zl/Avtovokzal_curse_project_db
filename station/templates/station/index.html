@@ -1,1 +1,74 @@
-<h1>Здесь будет сайт автовокзала</h1>
+{% extends 'station/base.html' %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold">Официальный сайт автовокзала</h1>
+        <p class="lead">Найдите и купите билет на автобус в несколько кликов</p>
+        
+        <div class="search-form mt-5 mx-auto" style="max-width: 900px;">
+            <form class="row g-3 align-items-center">
+                <div class="col-md-4">
+                    <select class="form-select form-control-lg" name="from">
+                        <option selected disabled>Откуда</option>
+                        {% for city in cities %}
+                        <option value="{{ city.id }}">{{ city.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select form-control-lg" name="to">
+                        <option selected disabled>Куда</option>
+                        {% for city in cities %}
+                        <option value="{{ city.id }}">{{ city.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control form-control-lg">
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary btn-lg w-100">🔍</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h3 class="mb-4">Отправления рейсов online</h3>
+    <div class="table-responsive bg-white rounded shadow-sm">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Время</th>
+                    <th>Рейс</th>
+                    <th>Перевозчик / Автобус</th>
+                    <th>Цена</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in trips %}
+                <tr>
+                    <td class="fw-bold text-primary">{{ trip.departure_time|date:"H:i" }}</td>
+                    <td>{{ trip.route }}</td>
+                    <td>
+                        <small class="text-muted d-block">ИП {{ trip.driver.full_name }}</small>
+                        <span>{{ trip.bus.model.name }}</span>
+                    </td>
+                    <td class="fw-bold">{{ trip.price }} руб.</td>
+                    <td class="text-end">
+                        <button class="btn btn-outline-success btn-sm px-4 rounded-pill">Купить билет</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-5">Рейсов на сегодня пока нет.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
