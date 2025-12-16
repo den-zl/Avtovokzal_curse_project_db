@@ -59,7 +59,7 @@
                     </td>
                     <td class="fw-bold">{{ trip.price }} руб.</td>
                     <td class="text-end">
-                        <button class="btn btn-outline-success btn-sm px-4 rounded-pill">Купить билет</button>
+                        <a href="{% url 'buy_ticket' trip.id %}" class="btn btn-outline-success btn-sm px-4 rounded-pill">Купить билет</a>
                     </td>
                 </tr>
                 {% empty %}

@@ -32,7 +32,17 @@
     <div class="container">
         <a class="navbar-brand" href="/">🚌 Автовокзал Онлайн</a>
         <div class="navbar-nav ms-auto">
-            <a class="nav-link" href="/admin">Вход для сотрудников</a>
+            {% if user.is_authenticated %}
+                <span class="nav-link text-light me-3">Привет, <b>{{ user.username }}</b></span>
+                <a class="btn btn-warning btn-sm align-self-center me-2" href="{% url 'profile' %}">Личный кабинет</a>
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-light btn-sm">Выйти</button>
+                </form>
+            {% else %}
+
+                <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">👤 Личный кабинет</a>
+            {% endif %}
         </div>
     </div>
 </nav>

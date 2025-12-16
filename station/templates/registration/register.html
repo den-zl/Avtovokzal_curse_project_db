@@ -1,13 +1,35 @@
 {% extends 'station/base.html' %}
 {% block content %}
-<div class="container mt-5" style="max-width: 400px;">
-    <h2 class="text-center mb-4">Регистрация пассажира</h2>
-    <div class="card p-4 shadow-sm">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-success w-100">Создать аккаунт</button>
-        </form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-5">
+                    <h2 class="text-center fw-bold mb-4">Регистрация</h2>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label class="form-label">{{ field.label }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="text-danger small">{{ field.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-success w-100 py-2 mt-3 fw-bold">Создать аккаунт</button>
+                    </form>
+                    <div class="text-center mt-4">
+                        <small class="text-muted">Уже есть аккаунт? <a href="{% url 'login' %}" class="text-decoration-none">Войти</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    input { display: block; width: 100%; padding: 0.375rem 0.75rem; font-size: 1rem; line-height: 1.5; color: #212529; background-color: #fff; border: 1px solid #ced4da; border-radius: 0.375rem; }
+    input:focus { border-color: #86b7fe; outline: 0; box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); }
+</style>
 {% endblock %}
