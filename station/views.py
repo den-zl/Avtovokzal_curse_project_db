@@ -1,20 +1,31 @@
 from django.shortcuts import render
-from .models import Trip, City, Ticket, Payment, UserProfile
+from .models import Trip, City, Ticket, Payment, UserProfile, Route
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from .models import Trip, Ticket, Payment
+from django.db.models import Q
 import random
 
 def index(request):
-    # Рейсы из базы
-    trips = Trip.objects.all().order_by('departure_time')
-    # Города для формы поиска
+    from_city = request.GET.get('from_city')
+    to_city = request.GET.get('to_city')
+    travel_date = request.GET.get('date')
+
+    trips = Trip.objects.all()
+
+    if from_city:
+        trips = trips.filter(route__start_point__city__name__icontains=from_city)
+
+    if to_city:
+        trips = trips.filter(route__end_point__city__name__icontains=to_city)
+
+    if travel_date:
+        trips = trips.filter(departure_time__date=travel_date)
     cities = City.objects.all()
 
     context = {
-        'trips': trips,
+        'trips': trips.order_by('departure_time'),
         'cities': cities,
     }
     return render(request, 'station/index.html', context)
