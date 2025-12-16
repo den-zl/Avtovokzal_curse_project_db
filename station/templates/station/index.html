@@ -3,35 +3,39 @@
 {% block content %}
 <div class="hero-section">
     <div class="container text-center">
-        <h1 class="display-4 fw-bold">Официальный сайт автовокзала</h1>
-        <p class="lead">Купите билет на автобус в несколько кликов</p>
-        
-        <div class="search-form mt-5 mx-auto" style="max-width: 900px;">
-            <form class="row g-3 align-items-center">
-                <div class="col-md-4">
-                    <select class="form-select form-control-lg" name="from">
-                        <option selected disabled>Откуда</option>
-                        {% for city in cities %}
-                        <option value="{{ city.id }}">{{ city.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <select class="form-select form-control-lg" name="to">
-                        <option selected disabled>Куда</option>
-                        {% for city in cities %}
-                        <option value="{{ city.id }}">{{ city.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <input type="date" class="form-control form-control-lg">
-                </div>
-                <div class="col-md-1">
-                    <button type="submit" class="btn btn-primary btn-lg w-100">🔍</button>
-                </div>
-            </form>
+        <h1>Официальный сайт автовокзала</h1>
+        <p>купить билет на автобус в несколько кликов</p>
+
+        <form method="get" action="{% url 'index' %}" class="search-panel">
+    <div class="search-group">
+        <span class="search-label">Откуда</span>
+        <div class="input-container">
+            <input type="text" name="from_city" placeholder="Город..." list="cities_list" autocomplete="off">
         </div>
+    </div>
+
+    <div class="search-group">
+        <span class="search-label">Куда</span>
+        <div class="input-container">
+            <input type="text" name="to_city" placeholder="Куда едем?" list="cities_list" autocomplete="off">
+        </div>
+    </div>
+
+    <div class="search-group" style="flex: 0.7;">
+        <span class="search-label">Дата поездки</span>
+        <div class="input-container">
+            <input type="text" placeholder="Все дни" onfocus="(this.type='date')" name="date">
+        </div>
+    </div>
+
+    <button type="submit" class="btn-search">Найти</button>
+    </form>
+
+    <datalist id="cities_list">
+        {% for city in cities %}
+        <option value="{{ city.name }}">
+        {% endfor %}
+    </datalist>
     </div>
 </div>
 
@@ -59,7 +63,7 @@
                     </td>
                     <td class="fw-bold">{{ trip.price }} руб.</td>
                     <td class="text-end">
-                        <a href="{% url 'buy_ticket' trip.id %}" class="btn btn-outline-success btn-sm px-4 rounded-pill">Купить билет</a>
+                        <button class="btn btn-outline-success btn-sm px-4 rounded-pill">Купить билет</button>
                     </td>
                 </tr>
                 {% empty %}
