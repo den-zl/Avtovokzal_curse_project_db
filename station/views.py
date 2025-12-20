@@ -65,7 +65,7 @@ def rules(request):
     return render(request, 'station/rules.html')
 
 def services(request):
-    return render(request, 'station/info.html', {'title': 'Дополнительные услуги'})
+    return render(request, 'station/services.html')
 
 def benefits(request):
     return render(request, 'station/info.html', {'title': 'Льготы'})

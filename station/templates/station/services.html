@@ -1,0 +1,92 @@
+{% extends 'station/base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Дополнительные услуги</h2>
+        <p class="text-muted">Мы делаем ваше ожидание максимально комфортным</p>
+    </div>
+
+    <div class="alert alert-light border-0 shadow-sm mb-5 p-4 text-center">
+        Вдоль здания на первом этаже автовокзала находится <strong>зона прибытия</strong>, предназначенная для пригородных и межрегиональных автобусов, а также стоянка общественного транспорта.
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <h5 class="mb-4 text-primary text-uppercase fw-bold small" style="letter-spacing: 1px;">Основные услуги</h5>
+
+            <div class="d-flex align-items-center mb-4 bg-white p-3 rounded-3 shadow-sm">
+                <div class="flex-shrink-0 bg-light p-3 rounded">
+                    <i class="fa-solid fa-vault fa-2x text-primary"></i>
+                </div>
+                <div class="ms-4">
+                    <h6 class="mb-1 fw-bold">Камеры хранения</h6>
+                    <p class="small text-muted mb-0">Для сохранности вещей организованы камеры хранения. Стоимость — <b>150 рублей/час</b>.</p>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-4 bg-white p-3 rounded-3 shadow-sm">
+                <div class="flex-shrink-0 bg-light p-3 rounded">
+                    <i class="fa-solid fa-mug-hot fa-2x text-primary"></i>
+                </div>
+                <div class="ms-4">
+                    <h6 class="mb-1 fw-bold">Кафе «Сытый Добрый»</h6>
+                    <p class="small text-muted mb-0">На 1 этаже вокзала вы можете перекусить и выпить горячие напитки в уютном кафе.</p>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-4 bg-white p-3 rounded-3 shadow-sm">
+                <div class="flex-shrink-0 bg-light p-3 rounded">
+                    <i class="fa-solid fa-baby fa-2x text-primary"></i>
+                </div>
+                <div class="ms-4">
+                    <h6 class="mb-1 fw-bold">Комната матери и ребенка</h6>
+                    <p class="small text-muted mb-0">Специально оборудованное место с пеленальным столиком для комфорта родителей.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h5 class="mb-4 text-primary text-uppercase fw-bold small" style="letter-spacing: 1px;">Сервисы вокзала</h5>
+
+            <div class="d-flex align-items-center mb-4 bg-white p-3 rounded-3 shadow-sm">
+                <div class="flex-shrink-0 bg-light p-3 rounded">
+                    <i class="fa-solid fa-couch fa-2x text-primary"></i>
+                </div>
+                <div class="ms-4">
+                    <h6 class="mb-1 fw-bold">Залы ожидания</h6>
+                    <p class="small text-muted mb-0">На 1 и 2 этажах. Оборудованы терминалами для оплаты билетов и автоматами со снеками.</p>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-4 bg-white p-3 rounded-3 shadow-sm">
+                <div class="flex-shrink-0 bg-light p-3 rounded">
+                    <i class="fa-solid fa-wifi fa-2x text-primary"></i>
+                </div>
+                <div class="ms-4">
+                    <h6 class="mb-1 fw-bold">WiFi зона</h6>
+                    <p class="small text-muted mb-0">Бесплатная сеть <b>AVTOVOKZAL_FREE</b> доступна на всей территории вокзала.</p>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-4 bg-white p-3 rounded-3 shadow-sm">
+                <div class="flex-shrink-0 bg-light p-3 rounded">
+                    <i class="fa-solid fa-shop fa-2x text-primary"></i>
+                </div>
+                <div class="ms-4">
+                    <h6 class="mb-1 fw-bold">Торговые точки</h6>
+                    <p class="small text-muted mb-0">Продажа товаров первой необходимости, свежей прессы и сувениров.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 p-4 border rounded-3 bg-light">
+        <div class="row small text-center text-muted">
+            <div class="col-md-4 mb-2"><i class="fa-solid fa-bullhorn me-1"></i> Платные объявления частного характера по радио</div>
+            <div class="col-md-4 mb-2"><i class="fa-solid fa-info-circle me-1"></i> Услуги справочного бюро</div>
+            <div class="col-md-4 mb-2"><i class="fa-solid fa-restroom me-1"></i> Туалетные комнаты (бесплатно)</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
