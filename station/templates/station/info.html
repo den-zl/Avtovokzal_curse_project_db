@@ -1,0 +1,17 @@
+{% extends 'station/base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4">{{ title }}</h2>
+            <div class="card p-4 shadow-sm border-0">
+                <p class="text-muted">Здесь будет размещена актуальная информация раздела "{{ title }}".</p>
+                <hr>
+                <p>На данный момент информация обновляется диспетчерской службой автовокзала.
+                Пожалуйста, уточняйте детали по телефону справочной службы.</p>
+                <a href="{% url 'index' %}" class="btn btn-outline-primary btn-sm mt-3 w-25">Вернуться назад</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

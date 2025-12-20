@@ -128,11 +128,20 @@
                     <a class="nav-link dropdown-toggle" href="#" id="passDrop" role="button" data-bs-toggle="dropdown">
                         Пассажирам
                     </a>
-                    <ul class="dropdown-menu border-0 shadow-sm">
-                        <li><a class="dropdown-item" href="#">Правила проезда</a></li>
-                        <li><a class="dropdown-item" href="#">Льготы</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Возврат билета</a></li>
+                    <ul class="dropdown-menu border-0 shadow" style="min-width: 250px;">
+                        <li><a class="dropdown-item py-2" href="{% url 'rules' %}">Правила проезда</a></li>
+                        <li><hr class="dropdown-divider my-0" style="background-color: #eee;"></li>
+
+                        <li><a class="dropdown-item py-2" href="{% url 'services' %}">Дополнительные услуги</a></li>
+                        <li><hr class="dropdown-divider my-0"></li>
+
+                        <li><a class="dropdown-item py-2" href="{% url 'benefits' %}">Льготы</a></li>
+                        <li><hr class="dropdown-divider my-0"></li>
+
+                        <li><a class="dropdown-item py-2" href="{% url 'maps' %}">Схемы автовокзалов</a></li>
+                        <li><hr class="dropdown-divider my-0"></li>
+
+                        <li><a class="dropdown-item py-2" href="{% url 'refund' %}">Возврат билета</a></li>
                     </ul>
                 </li>
 

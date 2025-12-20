@@ -60,3 +60,18 @@ def profile(request):
 
     tickets = Ticket.objects.filter(passenger=request.user).order_by('-booking_date')
     return render(request, 'station/profile.html', {'tickets': tickets})
+
+def rules(request):
+    return render(request, 'station/info.html', {'title': 'Правила проезда'})
+
+def services(request):
+    return render(request, 'station/info.html', {'title': 'Дополнительные услуги'})
+
+def benefits(request):
+    return render(request, 'station/info.html', {'title': 'Льготы'})
+
+def maps(request):
+    return render(request, 'station/info.html', {'title': 'Схемы автовокзалов'})
+
+def refund(request):
+    return render(request, 'station/info.html', {'title': 'Возврат билета'})
