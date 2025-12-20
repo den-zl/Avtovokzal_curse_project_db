@@ -1,0 +1,35 @@
+{% extends 'station/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 mb-5 text-center">
+    <h2 class="fw-bold mb-5">Схемы автовокзалов</h2>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-10 mb-5">
+            <div class="card shadow-sm border-0 p-4">
+                <h4 class="text-primary border-bottom pb-2 mb-4 text-start">Схема Белгородского автовокзала</h4>
+                <div class="bg-light p-2 rounded">
+
+                    <img src="{% static 'station/images/map_belgorod.png' %}" class="img-fluid rounded" alt="Схема вокзала Белгород">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-10 mb-5">
+            <div class="card shadow-sm border-0 p-4">
+                <h4 class="text-primary border-bottom pb-2 mb-4 text-start">Схема Курского автовокзала</h4>
+                <div class="bg-light p-2 rounded">
+
+                    <img src="{% static 'station/images/map_kursk.png' %}" class="img-fluid rounded" alt="Схема вокзала Курск">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-secondary d-inline-block py-2 px-4 small">
+        <i class="fa-solid fa-circle-info me-2"></i> Если у вас возникли трудности с навигацией, обратитесь к сотруднику справочного бюро.
+    </div>
+</div>
+{% endblock %}
