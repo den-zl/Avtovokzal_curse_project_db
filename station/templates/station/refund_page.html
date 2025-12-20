@@ -1,0 +1,29 @@
+{% extends 'station/base.html' %}
+{% block content %}
+<div class="container mt-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <h2 class="fw-bold mb-4">Возврат билета</h2>
+            <div class="card p-5 border-0 shadow-sm bg-white">
+                <p class="fs-5 text-dark mb-4">
+                    Для оформления возврата билета, купленного онлайн, необходимо подать официальное обращение в службу технической поддержки.
+                </p>
+
+                <div class="alert alert-light py-4 mb-4" style="border: 1px dashed #ced4da;">
+                    Вы можете оформить письмо на <span class="fw-bold">почту поддержки</span> или заполнить
+                    специальную форму в разделе:
+                    <a href="{% url 'support' %}" class="btn btn-outline-primary ms-2 px-4 py-2 fw-bold">
+                        <i class="fa-solid fa-headset me-2"></i>СЛУЖБА ПОДДЕРЖКИ
+                    </a>
+                </div>
+
+                <div class="text-start mt-4 small text-secondary">
+                    <p class="mb-1 fw-bold text-uppercase">Важно:</p>
+                    <p>— В тексте обращения обязательно укажите номер билета и ФИО пассажира.</p>
+                    <p>— Срок обработки заявки составляет от 1 до 10 рабочих дней.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

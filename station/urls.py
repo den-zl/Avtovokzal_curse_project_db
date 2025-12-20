@@ -12,4 +12,6 @@ urlpatterns = [
     path('benefits/', views.benefits, name='benefits'),
     path('maps/', views.maps, name='maps'),
     path('refund/', views.refund, name='refund'),
+    path('support/', views.support, name='support'),
+    path('refund/', views.refund, name='refund'),
 ]

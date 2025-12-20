@@ -1,0 +1,45 @@
+{% extends 'station/base.html' %}
+{% block content %}
+<div class="container mt-5 mb-5" style="max-width: 800px;">
+    <h2 class="fw-bold mb-4">Служба технической поддержки сайта</h2>
+    <p class="text-secondary mb-4">
+        Если у вас возникли вопросы по оформлению, возврату или оплате электронного билета, то вы можете обратиться по электронной почте
+        <a href="mailto:support@avtovokzal-online.ru" class="text-primary text-decoration-none fw-bold">support@avtovokzal-online.ru</a>
+        или воспользоваться формой обратной связи.
+    </p>
+
+    <div class="card border-0 shadow-sm p-4">
+        <form action="#" method="POST">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label class="form-label small text-muted text-uppercase">Имя*</label>
+                <input type="text" class="form-control rounded-3 py-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label small text-muted text-uppercase">Телефон*</label>
+                <input type="tel" class="form-control rounded-3 py-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label small text-muted text-uppercase">Email*</label>
+                <input type="email" class="form-control rounded-3 py-2" required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label small text-muted text-uppercase">Категория обращения*</label>
+                <select class="form-select rounded-3 py-2" required>
+                    <option value="" selected>----------</option>
+                    <option>Ошибка при оплате</option>
+                    <option>Возврат билета</option>
+                    <option>Вопрос по расписанию</option>
+                    <option>Другое</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="form-label small text-muted text-uppercase">Текст обращения*</label>
+                <textarea class="form-control rounded-3" rows="6" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2 fs-5">Отправить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

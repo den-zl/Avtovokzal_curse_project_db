@@ -73,5 +73,8 @@ def benefits(request):
 def maps(request):
     return render(request, 'station/maps.html')
 
+def support(request):
+    return render(request, 'station/support.html')
+
 def refund(request):
-    return render(request, 'station/info.html', {'title': 'Возврат билета'})
+    return render(request, 'station/refund_page.html')
