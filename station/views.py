@@ -62,7 +62,7 @@ def profile(request):
     return render(request, 'station/profile.html', {'tickets': tickets})
 
 def rules(request):
-    return render(request, 'station/info.html', {'title': 'Правила проезда'})
+    return render(request, 'station/rules.html')
 
 def services(request):
     return render(request, 'station/info.html', {'title': 'Дополнительные услуги'})
