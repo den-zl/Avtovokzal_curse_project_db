@@ -14,7 +14,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ ticket.trip.route }}</h5>
                     <p class="card-text">
-                        📅 <b>Дата:</b> {{ ticket.trip.departure_time|date:"d.m.Y" }} <br>
+                        📅 <b>Дата:</b> {{ ticket.travel_date|date:"d.m.Y" }} <br>
                         ⏰ <b>Время:</b> {{ ticket.trip.departure_time|date:"H:i" }} <br>
                         🚌 <b>Автобус:</b> {{ ticket.trip.bus.reg_number }}
                     </p>

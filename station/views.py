@@ -2,11 +2,15 @@ from django.shortcuts import render
 from .models import Trip, City, Ticket, Payment, UserProfile, Route
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, TimeField
+from django.db.models.functions import Cast
 from django.utils import timezone
+from datetime import datetime
 import random
+
+
 
 def index(request):
     from_city = request.GET.get('from_city')
@@ -15,18 +19,37 @@ def index(request):
 
     trips = Trip.objects.all()
 
+    now = timezone.now()
+    today = now.date()
+
+    if travel_date:
+        search_date = datetime.strptime(travel_date, '%Y-%m-%d').date()
+
+        if search_date < today:
+            trips = trips.none()
+
+        elif search_date == today:
+            trips = trips.filter(departure_time__time__gt=now.time())
+
+        else:
+            pass
+    else:
+        trips = trips.filter(departure_time__time__gt=now.time())
+
     if from_city:
         trips = trips.filter(route__start_point__city__name__icontains=from_city)
 
     if to_city:
         trips = trips.filter(route__end_point__city__name__icontains=to_city)
 
-    if travel_date:
-        trips = trips.filter(departure_time__date=travel_date)
     cities = City.objects.all()
 
+    trips_sorted = trips.annotate(
+        just_time=Cast('departure_time', TimeField())
+    ).order_by('just_time')
+
     context = {
-        'trips': trips.order_by('departure_time'),
+        'trips': trips_sorted,
         'cities': cities,
     }
     return render(request, 'station/index.html', context)
