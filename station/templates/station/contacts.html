@@ -1,0 +1,59 @@
+{% extends 'station/base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <h2 class="fw-bold mb-5" style="color: #1a1a1a;">Контакты</h2>
+
+    <!-- Верхние три блока -->
+    <div class="row g-4 mb-5">
+        <!-- Справочное бюро -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 bg-light p-4 shadow-sm" style="border-radius: 4px;">
+                <h6 class="fw-bold mb-4">Справочное бюро</h6>
+                <p class="fs-5 fw-bold mb-1">+7 (4722) 34-19-86</p>
+                <p class="text-muted small">ежедневно с 6:00 до 18:00</p>
+            </div>
+        </div>
+
+        <!-- Диспетчер -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 bg-light p-4 shadow-sm" style="border-radius: 4px;">
+                <h6 class="fw-bold mb-4">Диспетчер</h6>
+                <p class="fs-5 fw-bold mb-1">+7 (4722) 34-02-72</p>
+                <p class="text-muted small">ежедневно с 6:00 до 21:00</p>
+            </div>
+        </div>
+
+        <!-- Техподдержка -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 bg-light p-4 shadow-sm" style="border-radius: 4px;">
+                <h6 class="fw-bold mb-4">Служба технической поддержки сайта</h6>
+                <p class="fs-5 fw-bold mb-1">
+                    <a href="{% url 'support' %}" class="text-decoration-none text-dark">support@avtovokzal-online.ru</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Текстовая область снизу -->
+    <div class="mt-5 text-dark" style="max-width: 900px;">
+        <h3 class="fw-bold mb-4">Адрес и время работы</h3>
+        <div class="mb-5 ps-2">
+            <p class="fw-bold mb-3">Автовокзал</p>
+            <p class="mb-1">г. Белгород, пр-кт Б. Хмельницкого, 160</p>
+            <p>Время работы: 06:00 — 22:00</p>
+        </div>
+
+        <h4 class="fw-bold mb-4">По вопросам электронных билетов</h4>
+        <div class="ps-2">
+            <p class="mb-4 text-secondary">Если у вас возникли вопросы по оформлению, возврату или оплате электронного билета на сайте, то вы можете обратиться:</p>
+            <ul class="list-unstyled">
+                <li class="d-flex align-items-center mb-2">
+                    <span class="text-primary me-2">•</span>
+                    <span><a href="{% url 'support' %}" class="text-primary text-decoration-none fw-bold">support@avtovokzal-online.ru</a>. Написать вопрос в поддержку вы можете круглосуточно</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

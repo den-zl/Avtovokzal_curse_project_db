@@ -78,3 +78,6 @@ def support(request):
 
 def refund(request):
     return render(request, 'station/refund_page.html')
+
+def contacts(request):
+    return render(request, 'station/contacts.html')
