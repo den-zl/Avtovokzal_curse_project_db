@@ -172,6 +172,42 @@
         .status-cancelled { color: #dc3545; }
 
         .platform-col { width: 100px; text-align: center; }
+
+        .time-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            background-color: #ffffff;
+            border: 1px solid #e0e4e8;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #111;
+            font-size: 14px;
+        }
+
+        .schedule-row {
+            transition: background 0.2s;
+            border-bottom: 1px solid #f0f2f5;
+        }
+        .schedule-row:hover {
+            background-color: #f8faff;
+        }
+
+        .table-custom-schedule {
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cell-center {
+            text-align: center;
+        }
+
+        .trip-name-cell {
+            white-space: nowrap; /* Не дает тексту прыгать на вторую строку */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Если совсем не влезает, поставит троеточие */
+        }
     </style>
 </head>
 <body>
@@ -190,7 +226,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'index' %}">Расписание автобусов</a>
+                    <a class="nav-link" href="{% url 'bus_schedule' %}">Расписание автобусов</a>
                 </li>
 
                 <li class="nav-item dropdown">

@@ -54,6 +54,15 @@ def index(request):
     }
     return render(request, 'station/index.html', context)
 
+def bus_schedule(request):
+    all_trips = Trip.objects.all()
+
+    all_trips = all_trips.annotate(
+        just_time=Cast('departure_time', TimeField())
+    ).order_by('just_time')
+
+    return render(request, 'station/schedule.html', {'all_trips': all_trips})
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)

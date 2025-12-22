@@ -1,0 +1,49 @@
+{% extends 'station/base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold" style="font-size: 1.8rem; letter-spacing: -0.5px;">Расписание автобусов</h2>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table-trips shadow-sm mx-auto" style="border-radius: 8px; overflow: hidden; border: 1px solid #eee; max-width: 950px;">
+            <thead>
+                <tr>
+                    <th class="ps-4" style="width: 50%;">Рейс</th>
+                    <th class="text-center" style="width: 15%;">Платформа</th>
+                    <th class="text-center" style="width: 15%;">График</th>
+                    <th class="text-center" style="width: 30%; white-space: nowrap;">Время отправления</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in all_trips %}
+                <tr>
+                    <td class="ps-4 py-4" style="color: #1a1a1a; font-weight: 500;">
+                        {{ trip.route }}
+                    </td>
+
+                    <td class="text-center">
+                        <span class="text-muted">{{ trip.platform }}</span>
+                    </td>
+
+                    <td class="text-center">
+                        <span class="text-secondary">ежедневно</span>
+                    </td>
+
+                    <td class="text-center">
+                        <div class="time-badge">
+                            {{ trip.departure_time|date:"H:i" }}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center py-5 text-muted">В данный момент рейсов в расписании нет.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

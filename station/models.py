@@ -65,7 +65,7 @@ class Route(models.Model):
     distance = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Расстояние (км)")
 
     def __str__(self):
-        return f"Маршрут: {self.start_point} — {self.end_point}"
+        return f"{self.start_point} — {self.end_point}"
 
     class Meta:
         verbose_name = "Маршрут"
