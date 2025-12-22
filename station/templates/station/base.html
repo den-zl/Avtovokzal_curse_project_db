@@ -134,6 +134,44 @@
             background-color: #0056b3;
             box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
         }
+
+        .table-trips {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table-trips thead th {
+            font-size: 12px;
+            font-weight: 400;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 15px 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table-trips tbody tr {
+            border-bottom: 1px solid #f9f9f9;
+            transition: background 0.2s;
+        }
+        .table-trips tbody tr:hover { background: #fcfdfe; }
+
+        .table-trips td {
+            padding: 15px 10px;
+            font-size: 15px;
+            color: #333;
+            vertical-align: middle;
+        }
+
+        .time-col { font-weight: 700; width: 80px; }
+
+        .status-open { color: #333; font-weight: 600; }
+        .status-sent { color: #aaa; }
+        .status-cancelled { color: #dc3545; }
+
+        .platform-col { width: 100px; text-align: center; }
     </style>
 </head>
 <body>

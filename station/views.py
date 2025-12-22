@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.utils import timezone
 import random
 
 def index(request):
@@ -41,6 +42,7 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
+
 @login_required
 def buy_ticket(request, trip_id):
     trip = Trip.objects.get(id=trip_id)
@@ -52,7 +54,6 @@ def buy_ticket(request, trip_id):
     )
 
     Payment.objects.create(ticket=ticket, amount=trip.price, is_paid=True)
-
     return redirect('profile')
 
 @login_required

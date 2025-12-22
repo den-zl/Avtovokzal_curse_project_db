@@ -71,16 +71,25 @@ class Route(models.Model):
         verbose_name = "Маршрут"
         verbose_name_plural = "Маршруты"
 
+
 class Trip(models.Model):
     route = models.ForeignKey(Route, on_delete=models.CASCADE, verbose_name="Маршрут")
     bus = models.ForeignKey(Bus, on_delete=models.CASCADE, verbose_name="Автобус")
     driver = models.ForeignKey(Driver, on_delete=models.SET_NULL, null=True, verbose_name="Водитель")
-    departure_time = models.DateTimeField(verbose_name="Дата и время отправления")
-    arrival_time = models.DateTimeField(verbose_name="Дата и время прибытия (расчетное)")
+    departure_time = models.DateTimeField(verbose_name="Время отправления")
+    arrival_time = models.DateTimeField(verbose_name="Время прибытия")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена билета")
+    platform = models.IntegerField(default=1, verbose_name="Платформа")
+
+    STATUS_CHOICES = (
+        ('open', 'Открыт'),
+        ('sent', 'Отправлен'),
+        ('cancelled', 'Отменён перевозчиком'),
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open', verbose_name="Состояние")
 
     def __str__(self):
-        return f"Рейс на {self.departure_time} по {self.route}"
+        return f"{self.route} ({self.departure_time.strftime('%H:%M')})"
 
     class Meta:
         verbose_name = "Рейс"
@@ -116,7 +125,6 @@ class Ticket(models.Model):
         verbose_name = "Билет"
         verbose_name_plural = "Билеты"
 
-# Оплата
 class Payment(models.Model):
     ticket = models.OneToOneField(Ticket, on_delete=models.CASCADE, verbose_name="К билету №")
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сумма к оплате")
@@ -131,7 +139,6 @@ class Payment(models.Model):
         verbose_name = "Платеж"
         verbose_name_plural = "Платежи"
 
-# Отзывы и жалобы
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор")
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, verbose_name="Поездка")
