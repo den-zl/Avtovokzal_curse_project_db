@@ -116,8 +116,15 @@ class Ticket(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, verbose_name="Рейс")
     passenger = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пассажир")
     seat_number = models.PositiveIntegerField(verbose_name="Номер места в автобусе")
-    travel_date = models.DateField(auto_now_add=True, verbose_name="Дата поездки")
-    booking_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата и время покупки")
+
+    travel_date = models.DateField(verbose_name="Дата поездки", null=True, blank=True)
+    booking_date = models.DateTimeField(auto_now_add=True)
+
+    first_name = models.CharField(max_length=100, verbose_name="Имя", blank=True)
+    last_name = models.CharField(max_length=100, verbose_name="Фамилия", blank=True)
+    patronymic = models.CharField(max_length=100, verbose_name="Отчество", blank=True)
+    passport_series_number = models.CharField(max_length=50, verbose_name="Серия и номер документа", blank=True)
+
 
     def __str__(self):
         return f"Билет №{self.id} (Место {self.seat_number})"

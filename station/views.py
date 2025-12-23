@@ -1,8 +1,7 @@
-from django.shortcuts import render
 from .models import Trip, City, Ticket, Payment, UserProfile, Route
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, TimeField
 from django.db.models.functions import Cast
@@ -76,17 +75,38 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 @login_required
-def buy_ticket(request, trip_id):
-    trip = Trip.objects.get(id=trip_id)
+def checkout(request, trip_id):
+    trip = get_object_or_404(Trip, id=trip_id)
 
-    ticket = Ticket.objects.create(
-        trip=trip,
-        passenger=request.user,
-        seat_number=random.randint(1, 50)
-    )
+    date_input = request.POST.get('travel_date') or request.GET.get('date')
 
-    Payment.objects.create(ticket=ticket, amount=trip.price, is_paid=True)
-    return redirect('profile')
+    if not date_input or date_input == "" or date_input == "None":
+        travel_date = timezone.now().date()
+    else:
+        travel_date = date_input
+
+    if request.method == 'POST':
+        ticket = Ticket.objects.create(
+            trip=trip,
+            passenger=request.user,
+            last_name=request.POST.get('last_name'),
+            first_name=request.POST.get('first_name'),
+            patronymic=request.POST.get('patronymic'),
+            passport_series_number=request.POST.get('document'),
+            seat_number=request.POST.get('seat'),
+            travel_date=travel_date
+        )
+        Payment.objects.create(ticket=ticket, amount=trip.price, is_paid=True)
+        return redirect('profile')
+
+    booked_seats = Ticket.objects.filter(trip=trip, travel_date=travel_date).values_list('seat_number', flat=True)
+    available_seats = [s for s in range(1, 51) if s not in booked_seats]
+
+    return render(request, 'station/checkout.html', {
+        'trip': trip,
+        'seats': available_seats,
+        'selected_date': travel_date
+    })
 
 @login_required
 def profile(request):

@@ -81,7 +81,7 @@
 
                     <td class="text-end" style="width: 200px;">
                         {% if trip.status == 'open' or trip.status == 'boarding' %}
-                            <a href="{% url 'buy_ticket' trip.id %}" class="btn-buy-ticket py-2">Купить билет</a>
+                            <a href="{% url 'checkout' trip.id %}?date={{ request.GET.date }}" class="btn-buy-ticket">Купить билет</a>
                         {% endif %}
                     </td>
                 </tr>

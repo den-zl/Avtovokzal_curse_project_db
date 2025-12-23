@@ -1,0 +1,92 @@
+{% extends 'station/base.html' %}
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row g-5">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm p-4">
+                <h4 class="fw-bold mb-4">Данные пассажира</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="travel_date" value="{{ selected_date }}">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label small text-muted text-uppercase">Фамилия*</label>
+                            <input type="text" name="last_name" class="form-control" placeholder="Иванов" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small text-muted text-uppercase">Имя*</label>
+                            <input type="text" name="first_name" class="form-control" placeholder="Иван" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small text-muted text-uppercase">Отчество</label>
+                            <input type="text" name="patronymic" class="form-control" placeholder="Иванович">
+                        </div>
+
+                        <div class="col-md-6 mt-4">
+                            <label class="form-label small text-muted text-uppercase">Документ (Паспорт)*</label>
+                            <input type="text" name="document" class="form-control" placeholder="Серия и номер" required>
+                            <div class="form-text">10 цифр без пробелов</div>
+                        </div>
+
+                        <div class="col-md-3 mt-4">
+                            <label class="form-label small text-muted text-uppercase">Место*</label>
+                           <select name="seat" class="form-select" required>
+                                {% for seat in seats %}
+                                    <option value="{{ seat }}">Место № {{ seat }}</option>
+                                {% empty %}
+                                    <option disabled>Мест нет на сегодня</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-5 px-5 py-2 fw-bold rounded-pill">Оплатить и получить билет</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm sticky-top" style="top: 100px;">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">Ваш заказ</h5>
+
+                    <div class="mb-3 d-flex align-items-start gap-3">
+                        <div class="text-primary mt-1"><i class="fa-solid fa-circle-dot"></i></div>
+                        <div>
+                            <div class="fw-bold small">{{ trip.route.start_point.city }}</div>
+                            <div class="text-muted extra-small">Сегодня, {{ trip.departure_time|date:"H:i" }}</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 d-flex align-items-start gap-3">
+                        <div class="text-primary mt-1"><i class="fa-solid fa-location-dot"></i></div>
+                        <div>
+                            <div class="fw-bold small">{{ trip.route.end_point.city }}</div>
+                            <div class="text-muted extra-small">Сегодня, {{ trip.arrival_time|date:"H:i" }}</div>
+                        </div>
+                    </div>
+
+                    <hr class="text-muted">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Билет пассажирский</span>
+                        <span>{{ trip.price }} ₽</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="text-muted">Сервисный сбор</span>
+                        <span>0.00 ₽</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="fw-bold m-0">ИТОГО</h4>
+                        <h4 class="fw-bold text-primary m-0">{{ trip.price }} ₽</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .extra-small { font-size: 11px; }
+    .form-control:focus, .form-select:focus { border-color: #0d6efd; box-shadow: none; }
+</style>
+{% endblock %}

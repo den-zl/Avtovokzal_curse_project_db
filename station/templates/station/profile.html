@@ -1,33 +1,120 @@
 {% extends 'station/base.html' %}
 {% block content %}
-<div class="container mt-5">
-    <h2>Мои поездки</h2>
-    <hr>
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="fw-bold">Мои билеты</h2>
+        <a href="{% url 'index' %}" class="btn btn-outline-primary btn-sm rounded-pill px-4">Заказать еще</a>
+    </div>
+
     <div class="row">
         {% for ticket in tickets %}
-        <div class="col-md-6 mb-4">
-            <div class="card border-primary shadow-sm">
-                <div class="card-header bg-primary text-white d-flex justify-content-between">
-                    <span>Билет №{{ ticket.id }}</span>
-                    <span>Место: {{ ticket.seat_number }}</span>
+        <div class="col-12 mb-5">
+            <div class="e-ticket-wrapper d-flex shadow-sm bg-white">
+
+                <div class="ticket-main p-4 flex-grow-1">
+                    <div class="mb-4">
+                        <span class="text-uppercase text-muted extra-small d-block mb-1">Электронный билет</span>
+                        <h4 class="fw-bold m-0 text-primary">№ BS-{{ ticket.id|add:1000 }}</h4>
+                    </div>
+
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-5">
+                            <label class="text-uppercase text-muted extra-small d-block">Отправление</label>
+                            <div class="fw-bold fs-4 text-nowrap">
+                                {{ ticket.trip.route.start_point.city }}
+                                <span class="text-primary fs-5 ms-1">{{ ticket.trip.departure_time|date:"H:i" }}</span>
+                            </div>
+                            <div class="small text-secondary">{{ ticket.trip.route.start_point.name }}</div>
+                        </div>
+
+                        <div class="col-md-2 text-center d-none d-md-block">
+                            <div style="height: 45px; border-left: 1px solid #eee; margin: 0 auto; width: 1px;"></div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <label class="text-uppercase text-muted extra-small d-block">Прибытие</label>
+                            <div class="fw-bold fs-4 text-nowrap">
+                                {{ ticket.trip.route.end_point.city }}
+                                <span class="text-primary fs-5 ms-1">{{ ticket.trip.arrival_time|date:"H:i" }}</span>
+                            </div>
+                            <div class="small text-secondary">{{ ticket.trip.route.end_point.name }}</div>
+                        </div>
+                    </div>
+
+                    <div class="row pt-3 border-top align-items-center">
+                        <div class="col-md-4">
+                            <label class="text-uppercase text-muted extra-small d-block">Пассажир</label>
+                            <div class="fw-bold" style="font-size: 15px;">{{ ticket.last_name }} {{ ticket.first_name }} {{ ticket.patronymic }}</div>
+                            <div class="extra-small text-muted" style="font-weight: 400;">Паспорт: {{ ticket.passport_series_number }}</div>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <label class="text-uppercase text-muted extra-small d-block">Дата поездки</label>
+                            <span class="fw-bold">{{ ticket.travel_date|date:"d.m.Y" }}</span>
+                        </div>
+                        <div class="col-md-1 text-center">
+                            <label class="text-uppercase text-muted extra-small d-block">Место</label>
+                            <span class="fw-bold fs-5">{{ ticket.seat_number }}</span>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <label class="text-uppercase text-muted extra-small d-block">Платформа</label>
+                            <span class="fw-bold fs-5">{{ ticket.trip.platform }}</span>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <span class="badge bg-success bg-opacity-10 text-success fw-bold p-2 small">ОПЛАЧЕНО</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{ ticket.trip.route }}</h5>
-                    <p class="card-text">
-                        📅 <b>Дата:</b> {{ ticket.travel_date|date:"d.m.Y" }} <br>
-                        ⏰ <b>Время:</b> {{ ticket.trip.departure_time|date:"H:i" }} <br>
-                        🚌 <b>Автобус:</b> {{ ticket.trip.bus.reg_number }}
-                    </p>
+
+                <div class="ticket-stub p-4 bg-light d-flex flex-column justify-content-between align-items-center text-center border-start border-dashed">
+                    <div class="barcode-container">
+                        <div class="barcode"></div>
+                        <div class="extra-small text-muted mt-2" style="font-size: 9px;">
+                            {{ ticket.passport_series_number }} — {{ ticket.id|add:1000 }}
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-muted extra-small d-block">Цена билета</span>
+                        <span class="fw-bold text-dark fs-4">{{ ticket.trip.price }} ₽</span>
+                    </div>
                 </div>
-                <div class="card-footer text-muted">Куплен: {{ ticket.booking_date|date:"d.m.Y H:i" }}</div>
             </div>
         </div>
         {% empty %}
         <div class="text-center py-5">
-            <h4>У вас пока нет купленных билетов.</h4>
-            <a href="{% url 'index' %}" class="btn btn-primary mt-3">Найти рейс</a>
+            <h5 class="text-muted">Купленных билетов нет.</h5>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<style>
+    .extra-small { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #999; }
+
+    .e-ticket-wrapper {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #eee;
+    }
+
+    .ticket-stub {
+        min-width: 190px;
+        position: relative;
+    }
+
+    .border-dashed { border-left: 2px dashed #d1d5db !important; }
+
+    .ticket-stub::before, .ticket-stub::after {
+        content: ''; position: absolute; width: 24px; height: 24px;
+        background-color: #f4f7f6; border: 1px solid #eee; border-radius: 50%; left: -13px;
+    }
+    .ticket-stub::before { top: -13px; }
+    .ticket-stub::after { bottom: -13px; }
+
+    .barcode {
+        width: 120px;
+        height: 50px;
+        background: repeating-linear-gradient(90deg, #111, #111 2px, #fff 2px, #fff 5px);
+        margin: 0 auto;
+    }
+</style>
 {% endblock %}
