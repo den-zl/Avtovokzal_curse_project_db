@@ -152,7 +152,7 @@ def contacts(request):
 @login_required
 def export_csv(request):
     if not request.user.is_staff:
-        return HttpResponse("У вас нет прав на это действие", status=403)
+        return HttpResponse("Нет прав на это действие", status=403)
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="ticket_sales_report.csv"'

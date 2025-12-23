@@ -125,7 +125,6 @@ class Ticket(models.Model):
     patronymic = models.CharField(max_length=100, verbose_name="Отчество", blank=True)
     passport_series_number = models.CharField(max_length=50, verbose_name="Серия и номер документа", blank=True)
 
-
     def __str__(self):
         return f"Билет №{self.id} (Место {self.seat_number})"
 
