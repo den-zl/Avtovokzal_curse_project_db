@@ -1,16 +1,23 @@
-from .models import Trip, City, Ticket, Payment, UserProfile, Route
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
-from django.shortcuts import redirect, render, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.db.models import Q, TimeField
-from django.db.models.functions import Cast
-from django.utils import timezone
-from datetime import datetime
-import random
-import csv
-from django.http import HttpResponse
+import os, csv
+from datetime import datetime, timedelta
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.utils import timezone
+from django.db.models import TimeField
+from django.db.models.functions import Cast
+
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+
+from .models import Trip, City, Ticket, Payment, UserProfile
 
 def index(request):
     from_city = request.GET.get('from_city')
@@ -167,4 +174,64 @@ def export_csv(request):
             f"{t.trip.price} руб."
         ])
 
+    return response
+
+@login_required
+def export_pdf(request):
+    if not request.user.is_staff:
+        return HttpResponse("Доступ запрещен", status=403)
+
+    font_path = "/System/Library/Fonts/Supplemental/Arial.ttf"
+    font_name = 'ArialRus'
+    if os.path.exists(font_path):
+        pdfmetrics.registerFont(TTFont(font_name, font_path))
+    else:
+        return HttpResponse("Шрифт не найден")
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="sales_report.pdf"'
+
+    doc = SimpleDocTemplate(response, pagesize=landscape(A4), margin=(20, 20, 20, 20))
+    elements = []
+    styles = getSampleStyleSheet()
+
+    title_st = ParagraphStyle('Title', fontName=font_name, fontSize=16, spaceAfter=10)
+    norm_st = ParagraphStyle('Normal', fontName=font_name, fontSize=9, color=colors.grey)
+
+    msk = timezone.now() + timedelta(hours=3)
+    elements.append(Paragraph("Отчёт по продаже билетов", title_st))
+    elements.append(Paragraph(f"Автовокзал Онлайн  |  Дата: {msk.strftime('%d.%m.%Y %H:%M')} МСК", norm_st))
+    elements.append(Spacer(1, 15))
+
+    data = [["ID", "АККАУНТ", "ПАССАЖИР (ФИО)", "ПАСПОРТ", "РЕЙС / МАРШРУТ", "ДАТА", "МЕСТО", "СУММА"]]
+    tickets = Ticket.objects.all().order_by('-booking_date')
+
+    for t in tickets:
+        data.append([
+            t.id, t.passenger.username, f"{t.last_name} {t.first_name} {t.patronymic}",
+            t.passport_series_number, str(t.trip.route), t.travel_date.strftime("%d.%m.%Y"),
+            t.seat_number, f"{t.trip.price} р."
+        ])
+
+    table = Table(data, colWidths=[30, 60, 160, 90, 250, 70, 45, 65])
+    table.setStyle(TableStyle([
+        ('FONTNAME', (0, 0), (-1, -1), font_name),
+        ('FONTSIZE', (0, 0), (-1, 0), 10),
+        ('FONTSIZE', (0, 1), (-1, -1), 9),
+        ('LINEBELOW', (0, 0), (-1, 0), 1.5, colors.black),
+        ('LINEBELOW', (0, 1), (-1, -1), 0.5, colors.lightgrey),
+        ('ALIGN', (0, 0), (1, -1), 'CENTER'),
+        ('ALIGN', (2, 1), (4, -1), 'LEFT'),
+        ('ALIGN', (5, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.Whiter(colors.lightgrey, 0.1)]),
+        ('TOPPADDING', (0, 0), (-1, -1), 8),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+    ]))
+
+    elements.append(table)
+    elements.append(Spacer(1, 20))
+    elements.append(Paragraph(f"Всего продано билетов: {tickets.count()}", norm_st))
+
+    doc.build(elements)
     return response
