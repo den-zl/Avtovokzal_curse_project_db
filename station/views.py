@@ -8,7 +8,8 @@ from django.db.models.functions import Cast
 from django.utils import timezone
 from datetime import datetime
 import random
-
+import csv
+from django.http import HttpResponse
 
 
 def index(request):
@@ -134,3 +135,36 @@ def refund(request):
 
 def contacts(request):
     return render(request, 'station/contacts.html')
+
+
+@login_required
+def export_csv(request):
+    if not request.user.is_staff:
+        return HttpResponse("У вас нет прав на это действие", status=403)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="ticket_sales_report.csv"'
+    response.write(u'\ufeff'.encode('utf8'))
+
+    writer = csv.writer(response)
+
+    writer.writerow([
+        'ID билета', 'Аккаунт', 'Пассажир (ФИО)',
+        'Паспорт', 'Маршрут', 'Дата поездки', 'Место', 'Цена'
+    ])
+
+    tickets = Ticket.objects.select_related('passenger', 'trip').all().order_by('-booking_date')
+
+    for t in tickets:
+        writer.writerow([
+            t.id,
+            t.passenger.username,
+            f"{t.last_name} {t.first_name} {t.patronymic}",
+            t.passport_series_number,
+            f"{t.trip.route}",
+            t.travel_date.strftime("%d.%m.%Y"),
+            t.seat_number,
+            f"{t.trip.price} руб."
+        ])
+
+    return response

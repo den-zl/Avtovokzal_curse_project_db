@@ -34,7 +34,6 @@
             padding-bottom: 12px;
         }
 
-        /* Уменьшенный Главный Заголовок */
         .hero-section {
             background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('/static/station/images/bg_hero.jpg');
             background-size: cover;
@@ -257,6 +256,23 @@
                     <a class="nav-link" href="{% url 'support' %}">Поддержка</a>
                 </li>
             </ul>
+
+            {% if user.is_staff %}
+            <div class="nav-item dropdown d-inline-block me-3">
+                <a class="btn btn-outline-dark btn-sm dropdown-toggle rounded-pill px-3" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="fa-solid fa-file-export me-1"></i> Отчеты
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end border-0 shadow">
+                    <li><h6 class="dropdown-header">Экспорт данных БД</h6></li>
+                    <li><a class="dropdown-item py-2" href="{% url 'export_csv' %}">
+                        <i class="fa-solid fa-file-csv text-success me-2"></i> Выгрузить билеты (CSV)
+                    </a></li>
+                    <li><a class="dropdown-item py-2 disabled" href="#">
+                        <i class="fa-solid fa-file-pdf text-danger me-2"></i> Выгрузить билеты (PDF)
+                    </a></li>
+                </ul>
+            </div>
+            {% endif %}
 
             <div class="d-flex align-items-center">
                 {% if user.is_authenticated %}

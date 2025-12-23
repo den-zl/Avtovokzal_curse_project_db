@@ -15,4 +15,5 @@ urlpatterns = [
     path('refund/', views.refund, name='refund'),
     path('contacts/', views.contacts, name='contacts'),
     path('schedule/', views.bus_schedule, name='bus_schedule'),
+    path('export/csv/', views.export_csv, name='export_csv'),
 ]
