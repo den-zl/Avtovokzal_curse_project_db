@@ -17,4 +17,5 @@ urlpatterns = [
     path('schedule/', views.bus_schedule, name='bus_schedule'),
     path('export/csv/', views.export_csv, name='export_csv'),
     path('export/pdf/', views.export_pdf, name='export_pdf'),
+    path('backup/', views.create_backup, name='create_backup'),
 ]

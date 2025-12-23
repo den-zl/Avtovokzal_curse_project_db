@@ -9,6 +9,8 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.db.models import TimeField
 from django.db.models.functions import Cast
+from django.conf import settings
+from django.contrib import messages
 
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -18,6 +20,9 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 
 from .models import Trip, City, Ticket, Payment, UserProfile
+
+import subprocess
+import requests
 
 def index(request):
     from_city = request.GET.get('from_city')
@@ -235,3 +240,59 @@ def export_pdf(request):
 
     doc.build(elements)
     return response
+
+@login_required
+def create_backup(request):
+    if not request.user.is_staff:
+        return HttpResponse("Доступ запрещен", status=403)
+
+    db_name = 'avtovokzal_db'
+    db_user = 'postgres'
+    db_pass = '1'
+    yandex_token = 'y0__xCkt_SXBhjblgMgntvwixYw55DooAgo0Z_w7QYIn3Z5lWrlJ1JqcQZzRw'
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"backup_{timestamp}.sql"
+    filepath = os.path.join(settings.BASE_DIR, filename)
+
+    try:
+        env = os.environ.copy()
+        env["PGPASSWORD"] = db_pass
+        pg_dump_path = '/Library/PostgreSQL/16/bin/pg_dump'
+
+        with open(filepath, 'w') as f:
+            subprocess.run([pg_dump_path, '-U', db_user, '-h', 'localhost', '-O', db_name],
+                           stdout=f, env=env, check=True)
+
+        headers = {
+            'Authorization': f'OAuth {yandex_token}',
+            'Accept': 'application/json'
+        }
+        upload_url_query = f'https://cloud-api.yandex.net/v1/disk/resources/upload?path=/{filename}&overwrite=true'
+
+        res = requests.get(upload_url_query, headers=headers)
+        res_data = res.json()
+
+        upload_url = res_data.get('href')
+
+        if not upload_url:
+            error_msg = res_data.get('message', 'Ошибка авторизации')
+            raise Exception(f"Яндекс не дал ссылку: {error_msg}")
+
+        with open(filepath, 'rb') as f_binary:
+            put_res = requests.put(upload_url, data=f_binary)
+
+        if put_res.status_code in [201, 202]:
+            if os.path.exists(filepath):
+                os.remove(filepath)
+            messages.success(request, f"База данных передана в Яндекс.Диск как {filename}")
+        else:
+            raise Exception(f"Ошибка передачи файла: {put_res.status_code}")
+
+    except Exception as e:
+        if os.path.exists(filepath):
+            os.remove(filepath)
+        print(f"DEBUG ERROR: {str(e)}")
+        messages.error(request, f"Ошибка бэкапа: {str(e)}")
+
+    return redirect('index')

@@ -259,6 +259,9 @@
 
             {% if user.is_staff %}
             <div class="nav-item dropdown d-inline-block me-3">
+                <a href="{% url 'create_backup' %}" class="btn btn-warning btn-sm rounded-pill px-3 shadow-sm me-3" title="Создать бэкап системы">
+                    <i class="fa-solid fa-database me-1"></i> Резервная копия
+                </a>
                 <a class="btn btn-outline-dark btn-sm dropdown-toggle rounded-pill px-3" href="#" role="button" data-bs-toggle="dropdown">
                     <i class="fa-solid fa-file-export me-1"></i> Отчеты
                 </a>
@@ -296,6 +299,17 @@
         </div>
     </div>
 </nav>
+
+<div class="container mt-2">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
 
 {% block content %}
 
